@@ -21,6 +21,7 @@
 <template>
 	<div id="localVideoContainer"
 		class="videoContainer videoView"
+		:aria-label="videoContainerAriaLabel"
 		:class="videoContainerClass">
 		<video v-show="localMediaModel.attributes.videoEnabled"
 			id="localVideo"
@@ -46,6 +47,7 @@
 		</div>
 		<transition name="fade">
 			<LocalMediaControls
+				v-if="!isBig"
 				ref="localMediaControls"
 				:model="localMediaModel"
 				:local-call-participant-model="localCallParticipantModel"
@@ -377,6 +379,19 @@ export default {
 
 .avatar-container {
 	margin: auto;
+}
+
+.bad-connection-quality {
+	.video,
+	.avatar-container {
+		opacity: 0.5
+	}
+}
+
+.video-container-big {
+	position: absolute;
+	height: 100%;
+	width: 100%;
 }
 
 </style>
