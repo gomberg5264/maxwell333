@@ -369,6 +369,9 @@ export default {
 	display: flex;
 	flex-direction: column;
 }
+.selectable {
+	cursor: pointer;
+}
 
 .video {
 	height: 100%;
