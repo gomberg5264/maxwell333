@@ -500,6 +500,7 @@ export default {
 	position: absolute;
 	right: 20px;
 	bottom: 12px;
+	z-index: 1;
 }
 
 .nameIndicator button {
