@@ -21,7 +21,6 @@
 <template>
 	<div id="localVideoContainer"
 		class="videoContainer videoView"
-		:aria-label="videoContainerAriaLabel"
 		:class="videoContainerClass"
 		@mouseover="showShadow"
 		@mouseleave="hideShadow"

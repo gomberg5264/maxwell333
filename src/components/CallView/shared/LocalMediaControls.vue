@@ -167,10 +167,14 @@ export default {
 		qualityWarningTooltip: {
 			type: Object,
 			default: null,
-			isBig: {
-				type: Boolean,
-				default: false,
-			},
+		},
+		qualityWarningScreenTooltip: {
+			type: Object,
+			default: null,
+		},
+		isBig: {
+			type: Boolean,
+			default: false,
 		},
 	},
 
@@ -473,6 +477,7 @@ export default {
 		},
 	},
 }
+
 </script>
 
 <style lang="scss" scoped>
