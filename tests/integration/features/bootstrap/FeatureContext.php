@@ -912,7 +912,7 @@ class FeatureContext implements Context, SnippetAcceptingContext {
 
 		Assert::assertCount(count($formData->getHash()), $mentions, 'Mentions count does not match');
 
-		usort($mentions, function($a, $b) {
+		usort($mentions, function ($a, $b) {
 			if ($a['source'] === $b['source']) {
 				return $a['label'] <=> $b['label'];
 			}
@@ -920,7 +920,7 @@ class FeatureContext implements Context, SnippetAcceptingContext {
 		});
 
 		$expected = $formData->getHash();
-		usort($expected, function($a, $b) {
+		usort($expected, function ($a, $b) {
 			if ($a['source'] === $b['source']) {
 				return $a['label'] <=> $b['label'];
 			}
