@@ -49,7 +49,9 @@
  * that will be used when calling "getUserMedia(constraints)".
  *
  * The selected devices will be automatically cleared if they are no longer
- * available.
+ * available. When no device of certain kind is selected and there are other
+ * devices of that kind the selected device will fall back to the first one
+ * found, or to the one with the "default" id (if any).
  */
 export default function MediaDevicesManager() {
 	this.attributes = {
@@ -62,6 +64,9 @@ export default function MediaDevicesManager() {
 	this._enabledCount = 0
 
 	this._knownDevices = {}
+
+	this._fallbackAudioInputId = undefined
+	this._fallbackVideoInputId = undefined
 
 	this._updateDevicesBound = this._updateDevices.bind(this)
 }
@@ -108,10 +113,20 @@ MediaDevicesManager.prototype = {
 	},
 
 	_removeDevice: function(removedDevice) {
-		if (removedDevice.kind === 'audioinput' && this.attributes.audioInputId === removedDevice.deviceId) {
-			this.attributes.audioInputId = undefined
-		} else if (removedDevice.kind === 'videoinput' && this.attributes.videoInputId === removedDevice.deviceId) {
-			this.attributes.videoInputId = undefined
+		if (removedDevice.kind === 'audioinput') {
+			if (this._fallbackAudioInputId === removedDevice.deviceId) {
+				this._fallbackAudioInputId = undefined
+			}
+			if (this.attributes.audioInputId === removedDevice.deviceId) {
+				this.attributes.audioInputId = this._fallbackAudioInputId
+			}
+		} else if (removedDevice.kind === 'videoinput') {
+			if (this._fallbackVideoInputId === removedDevice.deviceId) {
+				this._fallbackVideoInputId = undefined
+			}
+			if (this.attributes.videoInputId === removedDevice.deviceId) {
+				this.attributes.videoInputId = this._fallbackVideoInputId
+			}
 		}
 
 		const removedDeviceIndex = this.attributes.devices.findIndex(oldDevice => oldDevice.deviceId === removedDevice.deviceId && oldDevice.kind === removedDevice.kind)
@@ -166,6 +181,24 @@ MediaDevicesManager.prototype = {
 
 		// Always refresh the known device with the latest values.
 		this._knownDevices[addedDevice.kind + '-' + addedDevice.deviceId] = addedDevice
+
+		// Set first available device as fallback, and override any
+		// fallback previously set if the default device is added.
+		if (addedDevice.kind === 'audioinput') {
+			if (!this._fallbackAudioInputId || addedDevice.deviceId === 'default') {
+				this._fallbackAudioInputId = addedDevice.deviceId
+			}
+			if (this.attributes.audioInputId === undefined) {
+				this.attributes.audioInputId = this._fallbackAudioInputId
+			}
+		} else if (addedDevice.kind === 'videoinput') {
+			if (!this._fallbackVideoInputId || addedDevice.deviceId === 'default') {
+				this._fallbackVideoInputId = addedDevice.deviceId
+			}
+			if (this.attributes.videoInputId === undefined) {
+				this.attributes.videoInputId = this._fallbackVideoInputId
+			}
+		}
 
 		this.attributes.devices.push(addedDevice)
 	},
