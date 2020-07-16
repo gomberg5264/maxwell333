@@ -647,10 +647,10 @@ class SharingContext implements Context {
 				$sharees[] = $expectedSharee;
 			}
 			$respondedArray = $this->getArrayOfShareesResponded($this->response, $shareeType);
-			usort($sharees, function($a, $b) {
+			usort($sharees, function ($a, $b) {
 				return $a[2] <=> $b[2]; // Sort by token
 			});
-			usort($respondedArray, function($a, $b) {
+			usort($respondedArray, function ($a, $b) {
 				return $a[2] <=> $b[2]; // Sort by token
 			});
 			\PHPUnit\Framework\Assert::assertEquals($sharees, $respondedArray);
