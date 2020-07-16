@@ -788,7 +788,7 @@ trigger:
     - master
     - stable*
   event:
-#    - pull_request
+    - pull_request
     - push
 
 ---
@@ -876,7 +876,7 @@ trigger:
     - master
     - stable*
   event:
-#    - pull_request
+    - pull_request
     - push
 
 #---
